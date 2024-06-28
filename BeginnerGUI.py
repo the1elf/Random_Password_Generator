@@ -2,6 +2,7 @@ import random
 import string
 # module allows us to copy and paste text to and from the clipboard to your computer
 import pyperclip
+#GUI 
 import PySimpleGUI as sg
 
 
@@ -11,7 +12,7 @@ QT_ENTER_KEY2 = 'special 16777221'
 sg.theme("DarkPurple7")
 
 
-# Defining the window's contents
+# Defining the window's contents: spinner, 3 buttons, text and fonts.
 layout = [[sg.Text("Random Password Generator", font=("Helvetica", 15, "bold"))],
           [sg.Text("Select Password Length:", key='-OUTPUT1-', font=("Helvetica", 10, "bold")),
           sg.Spin([i for i in range(8, 21)], initial_value=8, size=(4, 4), key='-INPUT-')],
@@ -26,12 +27,14 @@ window = sg.Window('Random Password Generator', layout, use_default_focus=False,
 while True: 
     event, values = window.read()
 
-    if event in ('\r', QT_ENTER_KEY1, QT_ENTER_KEY2):         # Check for ENTER key
+# Check for ENTER key
+    if event in ('\r', QT_ENTER_KEY1, QT_ENTER_KEY2):        
         elem = window.find_element_with_focus()
-        if elem is not None and elem.Type == sg.ELEM_TYPE_BUTTON:       # if it's a button element, click it
+# if it's a button element, click it
+        if elem is not None and elem.Type == sg.ELEM_TYPE_BUTTON:    
             elem.Click()
 
-
+# Button 1's actions: Generate a random password when clicked
     elif event == '-1-':
         useript = values['-INPUT-']
         lower = string.ascii_lowercase
@@ -44,7 +47,8 @@ while True:
         print(password)
         window['-OUTPUT-'].update(password)
 
-        
+    # Button 2's copies password to the clipboard, then popups a message
+    # autocloses after set duration    
     elif event == '-2-':
         op = window['-OUTPUT-'].get()
         pyperclip.copy(op)
@@ -53,7 +57,7 @@ while True:
         sg.popup_auto_close("Password Copied", button_type=5, auto_close_duration=.5)
                
 
-    # See if user wants to quit or window was closed
+    # Button 3 if user wants to quit or window was closed
     elif event == sg.WINDOW_CLOSED or event == '-3-':
         break
 
